@@ -1,0 +1,11 @@
+[package]
+name = "aviation_calc_util_ffi"
+version = "2.0.0"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+aviation_calc_util = "2.0.0"
+paste = "1.0.14"
