@@ -18,6 +18,54 @@ macro_rules! ffi_impl_general_for_number {
 }
 
 #[macro_export]
+macro_rules! ffi_gen_get_primitive_var_for_struct {
+    ($obj_type: ident, $method_prefix: ident, $var_name: ident, $var_type: ident) => {
+        paste::item! {
+            #[no_mangle]
+            unsafe extern "C" fn [< $method_prefix _get_ $var_name >] (ptr: *mut $obj_type) -> $var_type {
+                return (&*ptr).$var_name;
+            }
+        }
+    };
+}
+
+#[macro_export]
+macro_rules! ffi_gen_set_primitive_var_for_struct {
+    ($obj_type: ident, $method_prefix: ident, $var_name: ident, $var_type: ident) => {
+        paste::item! {
+            #[no_mangle]
+            unsafe extern "C" fn [< $method_prefix _set_ $var_name >] (ptr: *mut $obj_type, val: $var_type) {
+                (&*ptr).$var_name = val;
+            }
+        }
+    };
+}
+
+#[macro_export]
+macro_rules! ffi_gen_as_method_for_number {
+    ($obj_type: ident, $method_prefix: ident, $get_method_name: ident, $ret_type: ident) => {
+        paste::item! {
+            #[no_mangle]
+            unsafe extern "C" fn [< $method_prefix _ $get_method_name >] (ptr: *mut $obj_type) -> $ret_type {
+                return (&*ptr).$get_method_name();
+            }
+        }
+    };
+}
+
+#[macro_export]
+macro_rules! ffi_gen_from_method_for_number {
+    ($obj_type: ident, $method_prefix: ident, $create_method_name: ident, $input_type: ident) => {
+        paste::item! {
+            #[no_mangle]
+            unsafe extern "C" fn [< $method_prefix _ $create_method_name >] (val: $input_type) -> *mut $obj_type {
+                return Box::leak(Box::new($obj_type::$create_method_name(val)));
+            }
+        }
+    };
+}
+
+#[macro_export]
 macro_rules! ffi_impl_display_for_number {
     ($obj_type: ident, $method_prefix: ident) => {
         paste::item! {
