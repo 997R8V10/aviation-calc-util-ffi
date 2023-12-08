@@ -16,6 +16,19 @@ macro_rules! ffi_impl_eq_for_struct {
 }
 
 #[macro_export]
+macro_rules! ffi_impl_clone_for_struct {
+    ($obj_type: ident, $method_prefix: ident) => {
+        paste::item! {
+            #[no_mangle]
+            unsafe extern "C" fn [< $method_prefix _clone >] (ptr: *mut $obj_type) -> *mut $obj_type {
+                let left_obj = &*ptr;
+                return Box::leak(Box::new(left_obj.clone()));
+            }
+        }
+    }
+}
+
+#[macro_export]
 macro_rules! ffi_impl_ord_for_struct {
     ($obj_type: ident, $method_prefix: ident) => {
         paste::item! {
@@ -299,6 +312,7 @@ macro_rules! ffi_impl_all_for_number {
         crate::ffi_impl_ord_for_struct!($obj_type, $method_prefix);
         crate::ffi_impl_drop_for_struct!($obj_type, $method_prefix);
         crate::ffi_impl_display_for_struct!($obj_type, $method_prefix);
+        crate::ffi_impl_clone_for_struct!($obj_type, $method_prefix);
         crate::ffi_impl_one_part_op_for_number!($obj_type, $method_prefix, neg);
         crate::ffi_impl_two_part_op_for_number!($obj_type, $method_prefix, add);
         crate::ffi_impl_two_part_op_for_number!($obj_type, $method_prefix, sub);
