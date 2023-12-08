@@ -1,14 +1,53 @@
 use paste::paste;
 
 #[macro_export]
-macro_rules! ffi_impl_general_for_number {
+macro_rules! ffi_impl_eq_for_struct {
     ($obj_type: ident, $method_prefix: ident) => {
         paste::item! {
             #[no_mangle]
-            unsafe extern "C" fn [< $method_prefix _new >] (val: f64) -> *mut $obj_type {
-                return Box::leak(Box::new($obj_type::new(val)));
-            }
+            unsafe extern "C" fn [< $method_prefix _equals >] (ptr: *mut $obj_type, other_ptr: *mut $obj_type) -> bool {
+                let left_obj = &*ptr;
+                let right_obj = &*other_ptr;
 
+                return left_obj == right_obj;
+            }
+        }
+    }
+}
+
+#[macro_export]
+macro_rules! ffi_impl_ord_for_struct {
+    ($obj_type: ident, $method_prefix: ident) => {
+        paste::item! {
+            #[no_mangle]
+            unsafe extern "C" fn [< $method_prefix _compare >] (ptr: *mut $obj_type, other_ptr: *mut $obj_type) -> i32 {
+                let left_obj = &*ptr;
+                let right_obj = &*other_ptr;
+
+                let comp_val = left_obj.partial_cmp(right_obj);
+
+                if (comp_val.is_none()) {
+                    return 0;
+                }
+
+                if (comp_val.unwrap() == std::cmp::Ordering::Less) {
+                    return -1;
+                }
+
+                if (comp_val.unwrap() == std::cmp::Ordering::Greater) {
+                    return 1;
+                }
+
+                return 0;
+            }
+        }
+    }
+}
+
+#[macro_export]
+macro_rules! ffi_impl_drop_for_struct {
+    ($obj_type: ident, $method_prefix: ident) => {
+        paste::item! {
             #[no_mangle]
             unsafe extern "C" fn [< $method_prefix _drop >] (ptr: *mut $obj_type) {
                 drop(Box::from_raw(ptr));
@@ -66,7 +105,7 @@ macro_rules! ffi_gen_from_method_for_number {
 }
 
 #[macro_export]
-macro_rules! ffi_impl_display_for_number {
+macro_rules! ffi_impl_display_for_struct {
     ($obj_type: ident, $method_prefix: ident) => {
         paste::item! {
             #[no_mangle]
@@ -248,38 +287,29 @@ macro_rules! ffi_impl_methods_for_number {
 #[macro_export]
 macro_rules! ffi_impl_all_for_number {
     ($obj_type: ident, $method_prefix: ident) => {
-        use std::ops::Add;
-        use std::ops::AddAssign;
-        use std::ops::Div;
-        use std::ops::DivAssign;
-        use std::ops::Mul;
-        use std::ops::MulAssign;
-        use std::ops::Neg;
-        use std::ops::Rem;
-        use std::ops::RemAssign;
-        use std::ops::Sub;
-        use std::ops::SubAssign;
 
-        use crate::ffi_impl_assign_op_for_number;
-        use crate::ffi_impl_display_for_number;
-        use crate::ffi_impl_general_for_number;
-        use crate::ffi_impl_methods_for_number;
-        use crate::ffi_impl_one_part_op_for_number;
-        use crate::ffi_impl_two_part_op_for_number;
+        paste::item! {
+            #[no_mangle]
+            unsafe extern "C" fn [< $method_prefix _new >] (val: f64) -> *mut $obj_type {
+                return Box::leak(Box::new($obj_type::new(val)));
+            }
+        }
 
-        ffi_impl_general_for_number!($obj_type, $method_prefix);
-        ffi_impl_display_for_number!($obj_type, $method_prefix);
-        ffi_impl_one_part_op_for_number!($obj_type, $method_prefix, neg);
-        ffi_impl_two_part_op_for_number!($obj_type, $method_prefix, add);
-        ffi_impl_two_part_op_for_number!($obj_type, $method_prefix, sub);
-        ffi_impl_two_part_op_for_number!($obj_type, $method_prefix, mul);
-        ffi_impl_two_part_op_for_number!($obj_type, $method_prefix, div);
-        ffi_impl_two_part_op_for_number!($obj_type, $method_prefix, rem);
-        ffi_impl_assign_op_for_number!($obj_type, $method_prefix, add_assign);
-        ffi_impl_assign_op_for_number!($obj_type, $method_prefix, sub_assign);
-        ffi_impl_assign_op_for_number!($obj_type, $method_prefix, mul_assign);
-        ffi_impl_assign_op_for_number!($obj_type, $method_prefix, div_assign);
-        ffi_impl_assign_op_for_number!($obj_type, $method_prefix, rem_assign);
-        ffi_impl_methods_for_number!($obj_type, $method_prefix);
+        crate::ffi_impl_eq_for_struct!($obj_type, $method_prefix);
+        crate::ffi_impl_ord_for_struct!($obj_type, $method_prefix);
+        crate::ffi_impl_drop_for_struct!($obj_type, $method_prefix);
+        crate::ffi_impl_display_for_struct!($obj_type, $method_prefix);
+        crate::ffi_impl_one_part_op_for_number!($obj_type, $method_prefix, neg);
+        crate::ffi_impl_two_part_op_for_number!($obj_type, $method_prefix, add);
+        crate::ffi_impl_two_part_op_for_number!($obj_type, $method_prefix, sub);
+        crate::ffi_impl_two_part_op_for_number!($obj_type, $method_prefix, mul);
+        crate::ffi_impl_two_part_op_for_number!($obj_type, $method_prefix, div);
+        crate::ffi_impl_two_part_op_for_number!($obj_type, $method_prefix, rem);
+        crate::ffi_impl_assign_op_for_number!($obj_type, $method_prefix, add_assign);
+        crate::ffi_impl_assign_op_for_number!($obj_type, $method_prefix, sub_assign);
+        crate::ffi_impl_assign_op_for_number!($obj_type, $method_prefix, mul_assign);
+        crate::ffi_impl_assign_op_for_number!($obj_type, $method_prefix, div_assign);
+        crate::ffi_impl_assign_op_for_number!($obj_type, $method_prefix, rem_assign);
+        crate::ffi_impl_methods_for_number!($obj_type, $method_prefix);
     };
 }
