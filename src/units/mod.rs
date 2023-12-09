@@ -1,6 +1,15 @@
 use aviation_calc_util::units::angle::Angle;
 use aviation_calc_util::units::angular_velocity::AngularVelocity;
 use aviation_calc_util::units::length::Length;
+use aviation_calc_util::units::length::CONV_FACTOR_MI_M;
+use aviation_calc_util::units::length::CONV_FACTOR_M_FT;
+use aviation_calc_util::units::length::CONV_FACTOR_NMI_M;
+use aviation_calc_util::units::length::convert_feet_to_meters;
+use aviation_calc_util::units::length::convert_meters_to_feet;
+use aviation_calc_util::units::length::convert_meters_to_nautical_miles;
+use aviation_calc_util::units::length::convert_meters_to_statute_miles;
+use aviation_calc_util::units::length::convert_nautical_miles_to_meters;
+use aviation_calc_util::units::length::convert_statute_miles_to_meters;
 use aviation_calc_util::units::pressure::Pressure;
 use aviation_calc_util::units::temperature::Temperature;
 use aviation_calc_util::units::velocity::Velocity;
@@ -17,9 +26,9 @@ use std::ops::RemAssign;
 use std::ops::Sub;
 use std::ops::SubAssign;
 
-use crate::ffi_impl_all_for_number;
-use crate::ffi_gen_from_method_for_number;
 use crate::ffi_gen_as_method_for_number;
+use crate::ffi_gen_from_method_for_number;
+use crate::ffi_impl_all_for_number;
 
 // Length
 ffi_impl_all_for_number!(Length, units_length);
@@ -30,6 +39,15 @@ ffi_gen_as_method_for_number!(Length, units_length, as_meters, f64);
 ffi_gen_as_method_for_number!(Length, units_length, as_feet, f64);
 ffi_gen_as_method_for_number!(Length, units_length, as_nautical_miles, f64);
 ffi_gen_as_method_for_number!(Length, units_length, as_statute_miles, f64);
+crate::ffi_gen_get_primitive_const!(CONV_FACTOR_M_FT, f64, units_length);
+crate::ffi_gen_get_primitive_const!(CONV_FACTOR_NMI_M, f64, units_length);
+crate::ffi_gen_get_primitive_const!(CONV_FACTOR_MI_M, f64, units_length);
+crate::ffi_gen_unit_conv_func!(convert_meters_to_feet, f64, units_length);
+crate::ffi_gen_unit_conv_func!(convert_meters_to_nautical_miles, f64, units_length);
+crate::ffi_gen_unit_conv_func!(convert_meters_to_statute_miles, f64, units_length);
+crate::ffi_gen_unit_conv_func!(convert_feet_to_meters, f64, units_length);
+crate::ffi_gen_unit_conv_func!(convert_nautical_miles_to_meters, f64, units_length);
+crate::ffi_gen_unit_conv_func!(convert_statute_miles_to_meters, f64, units_length);
 
 // Pressure
 ffi_impl_all_for_number!(Pressure, units_pressure);
