@@ -1,0 +1,3 @@
+[parse]
+expand = ["aviation_calc_util_ffi"]
+parse_deps = false
