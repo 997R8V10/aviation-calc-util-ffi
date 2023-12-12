@@ -20,7 +20,7 @@ crate::ffi_gen_get_primitive_var_for_struct!(MagneticModelCoefficients, magnetic
 crate::ffi_gen_set_primitive_var_for_struct!(MagneticModelCoefficients, magnetic_magnetic_model_coefficients, h_dot_nm, f64);
 
 #[no_mangle]
-unsafe extern "C" fn magnetic_magnetic_model_coefficients_get_point_on_date(
+pub unsafe extern "C" fn magnetic_magnetic_model_coefficients_get_point_on_date(
     ptr: *mut MagneticModelCoefficients,
     model_epoch: f64,
     date: InteropDateStruct,

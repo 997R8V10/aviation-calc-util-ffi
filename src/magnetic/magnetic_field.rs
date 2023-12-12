@@ -31,13 +31,13 @@ crate::ffi_gen_get_struct_var_for_struct!(MagneticField, magnetic_magnetic_field
 crate::ffi_gen_set_struct_var_for_struct!(MagneticField, magnetic_magnetic_field, sec_elements, MagneticFieldElements);
 
 #[no_mangle]
-unsafe extern "C" fn magnetic_magnetic_field_true_to_magnetic(ptr: *mut MagneticField, true_bearing: *mut Bearing) -> *mut Bearing {
+pub unsafe extern "C" fn magnetic_magnetic_field_true_to_magnetic(ptr: *mut MagneticField, true_bearing: *mut Bearing) -> *mut Bearing {
     let obj = &*ptr;
     return Box::leak(Box::new(obj.true_to_magnetic(*true_bearing)));
 }
 
 #[no_mangle]
-unsafe extern "C" fn magnetic_magnetic_field_magnetic_to_true(ptr: *mut MagneticField, magnetic_bearing: *mut Bearing) -> *mut Bearing {
+pub unsafe extern "C" fn magnetic_magnetic_field_magnetic_to_true(ptr: *mut MagneticField, magnetic_bearing: *mut Bearing) -> *mut Bearing {
     let obj = &*ptr;
     return Box::leak(Box::new(obj.magnetic_to_true(*magnetic_bearing)));
 }

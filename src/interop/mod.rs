@@ -5,7 +5,7 @@ use aviation_calc_util::Utc;
 
 // C String
 #[no_mangle]
-unsafe extern "C" fn general_free_string(ptr: *mut std::ffi::c_char) {
+pub unsafe extern "C" fn general_free_string(ptr: *mut std::ffi::c_char) {
     drop(std::ffi::CString::from_raw(ptr));
 }
 
@@ -26,7 +26,7 @@ pub struct InteropArrStruct<T> {
 }
 
 #[no_mangle]
-unsafe extern "C" fn general_free_vec_f64(arr: InteropArrStruct<f64>) {
+pub unsafe extern "C" fn general_free_vec_f64(arr: InteropArrStruct<f64>) {
     drop(Vec::from_raw_parts(arr.ptr, arr.length, arr.capacity));
 }
 
