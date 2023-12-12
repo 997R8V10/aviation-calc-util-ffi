@@ -1,5 +1,3 @@
-use paste::paste;
-
 #[macro_export]
 macro_rules! ffi_gen_as_method_for_number {
     ($obj_type: ident, $method_prefix: ident, $get_method_name: ident, $ret_type: ident) => {
@@ -53,70 +51,25 @@ macro_rules! ffi_impl_two_part_op_for_number {
                 let left_obj = &*ptr;
                 return Box::leak(Box::new(left_obj.$method(rhs)));
             }
-
-            #[no_mangle]
-            unsafe extern "C" fn [< $method_prefix _ $method _f32 >] (ptr: *mut $obj_type, rhs: f32) -> *mut $obj_type {
-                let left_obj = &*ptr;
-                return Box::leak(Box::new(left_obj.$method(rhs)));
-            }
-
-            #[no_mangle]
-            unsafe extern "C" fn [< $method_prefix _ $method _i32 >] (ptr: *mut $obj_type, rhs: i32) -> *mut $obj_type {
-                let left_obj = &*ptr;
-                return Box::leak(Box::new(left_obj.$method(rhs)));
-            }
-
-            #[no_mangle]
-            unsafe extern "C" fn [< $method_prefix _ $method _i64 >] (ptr: *mut $obj_type, rhs: i64) -> *mut $obj_type {
-                let left_obj = &*ptr;
-                return Box::leak(Box::new(left_obj.$method(rhs)));
-            }
         }
     }
 }
 
 #[macro_export]
-macro_rules! ffi_impl_assign_op_for_number {
-    ($obj_type: ident, $method_prefix: ident, $method: ident) => {
-        paste::item! {
-            #[no_mangle]
-            unsafe extern "C" fn [< $method_prefix _ $method >] (ptr: *mut $obj_type, rhs_ptr: *mut $obj_type) {
-                let left_obj = &mut *ptr;
-                let right_obj = &*rhs_ptr;
-                left_obj.$method(*right_obj);
-            }
-
-            #[no_mangle]
-            unsafe extern "C" fn [< $method_prefix _ $method _f64 >] (ptr: *mut $obj_type, rhs: f64) {
-                let left_obj = &mut *ptr;
-                left_obj.$method(rhs);
-            }
-
-            #[no_mangle]
-            unsafe extern "C" fn [< $method_prefix _ $method _f32 >] (ptr: *mut $obj_type, rhs: f32) {
-                let left_obj = &mut *ptr;
-                left_obj.$method(rhs);
-            }
-
-            #[no_mangle]
-            unsafe extern "C" fn [< $method_prefix _ $method _i32 >] (ptr: *mut $obj_type, rhs: i32) {
-                let left_obj = &mut *ptr;
-                left_obj.$method(rhs);
-            }
-
-            #[no_mangle]
-            unsafe extern "C" fn [< $method_prefix _ $method _i64 >] (ptr: *mut $obj_type, rhs: i64) {
-                let left_obj = &mut *ptr;
-                left_obj.$method(rhs);
-            }
-        }
-    }
-}
-
-#[macro_export]
-macro_rules! ffi_impl_methods_for_number {
+macro_rules! ffi_impl_unit_for_number {
     ($obj_type: ident, $method_prefix: ident) => {
         paste::item! {
+            #[no_mangle]
+            unsafe extern "C" fn [< $method_prefix _new >] (val: f64) -> *mut $obj_type {
+                return Box::leak(Box::new($obj_type::new(val)));
+            }
+
+            #[no_mangle]
+            unsafe extern "C" fn [< $method_prefix _value >] (ptr: *mut $obj_type) -> f64 {
+                let left_obj = &*ptr;
+                return left_obj.value();
+            }
+
             #[no_mangle]
             unsafe extern "C" fn [< $method_prefix _abs >] (ptr: *mut $obj_type) -> *mut $obj_type {
                 let left_obj = &*ptr;
@@ -186,7 +139,7 @@ macro_rules! ffi_impl_methods_for_number {
             #[no_mangle]
             unsafe extern "C" fn [< $method_prefix _atan2 >] (ptr: *mut $obj_type, other_ptr: *mut $obj_type) -> *mut $obj_type {
                 let other = &*other_ptr;
-                return Box::leak(Box::new((&*ptr).atan2(*other)));
+                return Box::leak(Box::new((&*ptr).atan2(other)));
             }
         }
     }
@@ -195,14 +148,6 @@ macro_rules! ffi_impl_methods_for_number {
 #[macro_export]
 macro_rules! ffi_impl_all_for_number {
     ($obj_type: ident, $method_prefix: ident) => {
-
-        paste::item! {
-            #[no_mangle]
-            unsafe extern "C" fn [< $method_prefix _new >] (val: f64) -> *mut $obj_type {
-                return Box::leak(Box::new($obj_type::new(val)));
-            }
-        }
-
         crate::ffi_impl_eq_for_struct!($obj_type, $method_prefix);
         crate::ffi_impl_ord_for_struct!($obj_type, $method_prefix);
         crate::ffi_impl_drop_for_struct!($obj_type, $method_prefix);
@@ -214,11 +159,7 @@ macro_rules! ffi_impl_all_for_number {
         crate::ffi_impl_two_part_op_for_number!($obj_type, $method_prefix, mul);
         crate::ffi_impl_two_part_op_for_number!($obj_type, $method_prefix, div);
         crate::ffi_impl_two_part_op_for_number!($obj_type, $method_prefix, rem);
-        crate::ffi_impl_assign_op_for_number!($obj_type, $method_prefix, add_assign);
-        crate::ffi_impl_assign_op_for_number!($obj_type, $method_prefix, sub_assign);
-        crate::ffi_impl_assign_op_for_number!($obj_type, $method_prefix, mul_assign);
-        crate::ffi_impl_assign_op_for_number!($obj_type, $method_prefix, div_assign);
-        crate::ffi_impl_assign_op_for_number!($obj_type, $method_prefix, rem_assign);
-        crate::ffi_impl_methods_for_number!($obj_type, $method_prefix);
+        crate::ffi_impl_unit_for_number!($obj_type, $method_prefix);
+        crate::ffi_impl_default_for_struct!($obj_type, $method_prefix);
     };
 }

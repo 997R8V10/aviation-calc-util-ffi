@@ -1,0 +1,20 @@
+use aviation_calc_util::units::temperature::convert_celsius_to_kelvin;
+use aviation_calc_util::units::temperature::convert_kelvin_to_celsius;
+use aviation_calc_util::units::temperature::Temperature;
+use aviation_calc_util::units::temperature::CONV_FACTOR_KELVIN_C;
+use aviation_calc_util::units::unit::Unit;
+use std::ops::Add;
+use std::ops::Div;
+use std::ops::Mul;
+use std::ops::Neg;
+use std::ops::Rem;
+use std::ops::Sub;
+
+crate::ffi_impl_all_for_number!(Temperature, units_temperature);
+crate::ffi_gen_from_method_for_number!(Temperature, units_temperature, from_kelvin, f64);
+crate::ffi_gen_from_method_for_number!(Temperature, units_temperature, from_celsius, f64);
+crate::ffi_gen_as_method_for_number!(Temperature, units_temperature, as_kelvin, f64);
+crate::ffi_gen_as_method_for_number!(Temperature, units_temperature, as_celsius, f64);
+crate::ffi_gen_get_primitive_const!(CONV_FACTOR_KELVIN_C, f64, units_temperature);
+crate::ffi_gen_unit_conv_func!(convert_kelvin_to_celsius, f64, units_temperature);
+crate::ffi_gen_unit_conv_func!(convert_celsius_to_kelvin, f64, units_temperature);

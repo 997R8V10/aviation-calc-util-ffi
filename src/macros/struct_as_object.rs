@@ -1,15 +1,21 @@
-use paste::paste;
-
 #[macro_export]
 macro_rules! ffi_impl_eq_for_struct {
     ($obj_type: ident, $method_prefix: ident) => {
         paste::item! {
             #[no_mangle]
-            unsafe extern "C" fn [< $method_prefix _equals >] (ptr: *mut $obj_type, other_ptr: *mut $obj_type) -> bool {
+            unsafe extern "C" fn [< $method_prefix _eq >] (ptr: *mut $obj_type, other_ptr: *mut $obj_type) -> bool {
                 let left_obj = &*ptr;
                 let right_obj = &*other_ptr;
 
-                return left_obj == right_obj;
+                return left_obj.eq(right_obj);
+            }
+
+            #[no_mangle]
+            unsafe extern "C" fn [< $method_prefix _ne >] (ptr: *mut $obj_type, other_ptr: *mut $obj_type) -> bool {
+                let left_obj = &*ptr;
+                let right_obj = &*other_ptr;
+
+                return left_obj.ne(right_obj);
             }
         }
     }
@@ -23,6 +29,18 @@ macro_rules! ffi_impl_clone_for_struct {
             unsafe extern "C" fn [< $method_prefix _clone >] (ptr: *mut $obj_type) -> *mut $obj_type {
                 let left_obj = &*ptr;
                 return Box::leak(Box::new(left_obj.clone()));
+            }
+        }
+    }
+}
+
+#[macro_export]
+macro_rules! ffi_impl_default_for_struct {
+    ($obj_type: ident, $method_prefix: ident) => {
+        paste::item! {
+            #[no_mangle]
+            unsafe extern "C" fn [< $method_prefix _default >] () -> *mut $obj_type {
+                return Box::leak(Box::new($obj_type::default()));
             }
         }
     }
@@ -53,6 +71,38 @@ macro_rules! ffi_impl_ord_for_struct {
 
                 return 0;
             }
+
+            #[no_mangle]
+            unsafe extern "C" fn [< $method_prefix _lt >] (ptr: *mut $obj_type, other_ptr: *mut $obj_type) -> bool {
+                let left_obj = &*ptr;
+                let right_obj = &*other_ptr;
+
+                return left_obj.lt(right_obj);
+            }
+
+            #[no_mangle]
+            unsafe extern "C" fn [< $method_prefix _le >] (ptr: *mut $obj_type, other_ptr: *mut $obj_type) -> bool {
+                let left_obj = &*ptr;
+                let right_obj = &*other_ptr;
+
+                return left_obj.le(right_obj);
+            }
+
+            #[no_mangle]
+            unsafe extern "C" fn [< $method_prefix _gt >] (ptr: *mut $obj_type, other_ptr: *mut $obj_type) -> bool {
+                let left_obj = &*ptr;
+                let right_obj = &*other_ptr;
+
+                return left_obj.gt(right_obj);
+            }
+
+            #[no_mangle]
+            unsafe extern "C" fn [< $method_prefix _ge >] (ptr: *mut $obj_type, other_ptr: *mut $obj_type) -> bool {
+                let left_obj = &*ptr;
+                let right_obj = &*other_ptr;
+
+                return left_obj.ge(right_obj);
+            }
         }
     }
 }
@@ -74,7 +124,7 @@ macro_rules! ffi_gen_get_primitive_var_for_struct {
     ($obj_type: ident, $method_prefix: ident, $var_name: ident, $var_type: ident) => {
         paste::item! {
             #[no_mangle]
-            unsafe extern "C" fn [< $method_prefix _get_ $var_name >] (ptr: *mut $obj_type) -> $var_type {
+            unsafe extern "C" fn [< $method_prefix _ $var_name >] (ptr: *mut $obj_type) -> $var_type {
                 return (&*ptr).$var_name;
             }
         }
@@ -87,7 +137,33 @@ macro_rules! ffi_gen_set_primitive_var_for_struct {
         paste::item! {
             #[no_mangle]
             unsafe extern "C" fn [< $method_prefix _set_ $var_name >] (ptr: *mut $obj_type, val: $var_type) {
-                (&*ptr).$var_name = val;
+                (*ptr).$var_name = val;
+            }
+        }
+    };
+}
+
+
+
+#[macro_export]
+macro_rules! ffi_gen_get_struct_var_for_struct {
+    ($obj_type: ident, $method_prefix: ident, $var_name: ident, $var_type: ident) => {
+        paste::item! {
+            #[no_mangle]
+            unsafe extern "C" fn [< $method_prefix _ $var_name >] (ptr: *mut $obj_type) -> *mut $var_type {
+                return Box::leak(Box::new((&*ptr).$var_name));
+            }
+        }
+    };
+}
+
+#[macro_export]
+macro_rules! ffi_gen_set_struct_var_for_struct {
+    ($obj_type: ident, $method_prefix: ident, $var_name: ident, $var_type: ident) => {
+        paste::item! {
+            #[no_mangle]
+            unsafe extern "C" fn [< $method_prefix _set_ $var_name >] (ptr: *mut $obj_type, val: *mut $var_type) {
+                (*ptr).$var_name = *val;
             }
         }
     };

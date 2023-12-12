@@ -1,5 +1,3 @@
-use paste::paste;
-
 mod struct_as_object;
 mod number;
 
