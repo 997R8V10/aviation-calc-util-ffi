@@ -9,3 +9,5 @@ unsafe extern "C" fn magnetic_get_epoch_year(date: InteropDateStruct) -> f64 {
 
 mod magnetic_model;
 mod magnetic_tile;
+mod magnetic_field;
+mod magnetic_model_coefficients;

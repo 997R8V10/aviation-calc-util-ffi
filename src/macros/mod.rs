@@ -1,5 +1,6 @@
 mod struct_as_object;
 mod number;
+mod geo_tile;
 
 #[macro_export]
 macro_rules! ffi_gen_get_primitive_const {
