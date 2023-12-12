@@ -27,11 +27,11 @@ macro_rules! ffi_gen_get_struct_const {
 
 #[macro_export]
 macro_rules! ffi_gen_unit_conv_func {
-    ($method_name: ident, $val_type: ident, $method_prefix: ident) => {
+    ($obj_type: ident, $method_name: ident, $val_type: ident, $method_prefix: ident) => {
         paste::item! {
             #[no_mangle]
             unsafe extern "C" fn [< $method_prefix _static_ $method_name >] (val: $val_type) -> $val_type {
-                return $method_name(val);
+                return $obj_type::$method_name(val);
             }
         }
     };

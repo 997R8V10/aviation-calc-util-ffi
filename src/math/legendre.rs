@@ -1,4 +1,4 @@
-use aviation_calc_util::math::{legendre::{LegendreManager, self}, polynomial::Polynomial};
+use aviation_calc_util::math::{legendre::{LegendreManager, self}, Polynomial};
 
 crate::ffi_impl_drop_for_struct!(LegendreManager, math_legendre_legendremanager);
 

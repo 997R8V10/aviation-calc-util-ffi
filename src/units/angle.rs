@@ -1,5 +1,5 @@
-use aviation_calc_util::units::angle::Angle;
-use aviation_calc_util::units::unit::Unit;
+use aviation_calc_util::units::Angle;
+use aviation_calc_util::units::Unit;
 use std::ops::Add;
 use std::ops::Div;
 use std::ops::Mul;

@@ -1,4 +1,4 @@
-use aviation_calc_util::math::polynomial::Polynomial;
+use aviation_calc_util::math::Polynomial;
 
 use crate::interop::{InteropArrStruct, rust_vec_to_c_arr, c_arr_to_rust_vec};
 

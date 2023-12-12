@@ -1,12 +1,6 @@
 use std::ptr;
 
-use aviation_calc_util::{
-    geo::{bearing::Bearing, geo_point::GeoPoint},
-    magnetic::magnetic_model::{
-        MagneticField, MagneticFieldElements, MagneticModel, MagneticModelCoefficients, EARTH_WGS84_RECIPROCAL_FLATTENING, EARTH_WGS84_SEMI_MAJOR_AXIS, GEOMAGNETIC_REFERENCE_RADIUS, WMM_EXPANSION,
-    },
-    units::angle::Angle,
-};
+use aviation_calc_util::{magnetic::{EARTH_WGS84_SEMI_MAJOR_AXIS, EARTH_WGS84_RECIPROCAL_FLATTENING, WMM_EXPANSION, GEOMAGNETIC_REFERENCE_RADIUS, MagneticModelCoefficients, MagneticModel, MagneticFieldElements, MagneticField}, units::Angle, geo::{Bearing, GeoPoint}};
 
 use crate::interop::{c_str_to_rust_str, rust_error_to_cstr, rust_naive_date_to_struct, rust_str_to_c_str, struct_to_rust_naive_date, InteropDateStruct, InteropArrStruct, c_arr_to_rust_vec};
 

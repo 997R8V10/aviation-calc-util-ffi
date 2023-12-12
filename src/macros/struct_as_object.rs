@@ -143,7 +143,29 @@ macro_rules! ffi_gen_set_primitive_var_for_struct {
     };
 }
 
+#[macro_export]
+macro_rules! ffi_gen_get_primitive_const_for_struct {
+    ($obj_type: ident, $const_name: ident, $const_type: ident, $method_prefix: ident) => {
+        paste::item! {
+            #[no_mangle]
+            unsafe extern "C" fn [< $method_prefix _get_const_ $const_name >] () -> $const_type {
+                return $obj_type::$const_name;
+            }
+        }
+    };
+}
 
+#[macro_export]
+macro_rules! ffi_gen_get_struct_const_for_struct {
+    ($obj_type: ident, $const_name: ident, $const_type: ident, $method_prefix: ident) => {
+        paste::item! {
+            #[no_mangle]
+            unsafe extern "C" fn [< $method_prefix _get_const_ $const_name >] () -> *mut $const_type {
+                return Box::leak(Box::new($obj_type::$const_name));
+            }
+        }
+    };
+}
 
 #[macro_export]
 macro_rules! ffi_gen_get_struct_var_for_struct {

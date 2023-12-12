@@ -1,17 +1,10 @@
 use std::sync::Arc;
 
-use aviation_calc_util::{
-    geo::{geo_point::GeoPoint, bearing::{self, Bearing}},
-    magnetic::{
-        magnetic_model::MagneticModel,
-        magnetic_tile::{MagneticTile, MagneticTileManager, MAG_TILE_RES},
-    },
-    units::angle::Angle,
-};
+use aviation_calc_util::{magnetic::{MagneticTile, MagneticTileManager, MagneticModel}, units::Angle, geo::{GeoPoint, Bearing}};
 
 use crate::interop::{struct_to_rust_naive_date, InteropDateStruct};
 
-crate::ffi_gen_get_struct_const!(MAG_TILE_RES, Angle, magnetic_magnetic_tile);
+crate::ffi_gen_get_struct_const_for_struct!(MagneticTile, MAG_TILE_RES, Angle, magnetic_magnetic_tile);
 
 // MagneticTileManager
 crate::ffi_impl_drop_for_struct!(MagneticTileManager, magnetic_magnetic_tile_magnetictilemanager);

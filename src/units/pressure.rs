@@ -1,10 +1,5 @@
-use aviation_calc_util::units::pressure::convert_Pa_to_inHg;
-use aviation_calc_util::units::pressure::convert_hPa_to_inHg;
-use aviation_calc_util::units::pressure::convert_inHg_to_Pa;
-use aviation_calc_util::units::pressure::convert_inHg_to_hPa;
-use aviation_calc_util::units::pressure::Pressure;
-use aviation_calc_util::units::pressure::CONV_FACTOR_PA_INHG;
-use aviation_calc_util::units::unit::Unit;
+use aviation_calc_util::units::Pressure;
+use aviation_calc_util::units::Unit;
 use std::ops::Add;
 use std::ops::Div;
 use std::ops::Mul;
@@ -19,8 +14,8 @@ crate::ffi_gen_from_method_for_number!(Pressure, units_pressure, from_inches_of_
 crate::ffi_gen_as_method_for_number!(Pressure, units_pressure, as_pascals, f64);
 crate::ffi_gen_as_method_for_number!(Pressure, units_pressure, as_inches_of_mercury, f64);
 crate::ffi_gen_as_method_for_number!(Pressure, units_pressure, as_hectopascals, f64);
-crate::ffi_gen_get_primitive_const!(CONV_FACTOR_PA_INHG, f64, units_pressure);
-crate::ffi_gen_unit_conv_func!(convert_hPa_to_inHg, f64, units_pressure);
-crate::ffi_gen_unit_conv_func!(convert_Pa_to_inHg, f64, units_pressure);
-crate::ffi_gen_unit_conv_func!(convert_inHg_to_hPa, f64, units_pressure);
-crate::ffi_gen_unit_conv_func!(convert_inHg_to_Pa, f64, units_pressure);
+crate::ffi_gen_get_primitive_const_for_struct!(Pressure, CONV_FACTOR_PA_INHG, f64, units_pressure);
+crate::ffi_gen_unit_conv_func!(Pressure, convert_hPa_to_inHg, f64, units_pressure);
+crate::ffi_gen_unit_conv_func!(Pressure, convert_Pa_to_inHg, f64, units_pressure);
+crate::ffi_gen_unit_conv_func!(Pressure, convert_inHg_to_hPa, f64, units_pressure);
+crate::ffi_gen_unit_conv_func!(Pressure, convert_inHg_to_Pa, f64, units_pressure);
