@@ -2,7 +2,6 @@
 name = "aviation_calc_util_ffi"
 version = "2.2.0"
 edition = "2021"
-#build = "build.rs"
 
 [lib]
 crate-type = ["cdylib"]
@@ -11,6 +10,3 @@ crate-type = ["cdylib"]
 anyhow = "1.0.75"
 aviation_calc_util = "2.2.0"
 paste = "1.0.14"
-
-#[build-dependencies]
-#cbindgen = "0.26.0"
