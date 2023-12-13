@@ -17,6 +17,6 @@
     <file src="build\**" target="build" />
     <file src="runtimes\**" target="runtimes" />
     <file src="${CARGO_PKG_README}" target="" />
-    <file src="LICENSE" target="" />
+    <file src="LICENSE.txt" target="" />
   </files>
 </package>
