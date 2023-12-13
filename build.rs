@@ -19,6 +19,14 @@ fn main() {
     replace_file_vars(
         &crate_dir.join("nugetinfo").join("template.targets"),
         &target_dir.join("build").join(format!("{}.targets", nuget_package_name)),
+    );    
+    replace_file_vars(
+        &crate_dir.join("README.md"),
+        &target_dir.join("README.md"),
+    );    
+    replace_file_vars(
+        &crate_dir.join("LICENSE"),
+        &target_dir.join("LICENSE.txt"),
     );
 }
 
