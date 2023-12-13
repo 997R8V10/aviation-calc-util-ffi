@@ -1,5 +1,6 @@
 use aviation_calc_util::{atmos::{R_DRY_AIR, SPEC_HEAT_RATIO_AIR, ISA_STD_TEMP, ISA_STD_PRES, ISA_STD_DENS, ISA_STD_LAPSE_RATE, ISA_STRATO_TEMP, ISA_STD_PRES_DROP_PER_ALT, calculate_dry_air_density, calculate_pressure_at_alt, calculate_temp_at_alt, calculate_density_altitude, calculate_impact_pressure_at_cas, calculate_calibrated_airspeed, calculate_mach_number, calculate_eas, calculate_speed_of_sound_dry_air, convert_mach_to_tas, calculate_impact_pressure, convert_tas_to_mach, convert_ias_to_tas, convert_indicated_to_absolute_alt, convert_absolute_to_indicated_alt, convert_indicated_to_pressure_alt, calculate_isa_temp, convert_tas_to_ias}, units::{Temperature, Pressure, Velocity, Length}};
 
+pub mod grib;
 
 crate::ffi_gen_get_primitive_const!(R_DRY_AIR, f64, atmos);
 crate::ffi_gen_get_primitive_const!(SPEC_HEAT_RATIO_AIR, f64, atmos);

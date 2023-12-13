@@ -89,6 +89,6 @@ pub fn struct_to_rust_date_time(date_time_struct: InteropDateTimeStruct) -> Opti
 }
 
 // Errors
-pub fn rust_error_to_cstr(error: &anyhow::Error) -> *const std::ffi::c_char {
+pub fn rust_error_to_cstr(error: &aviation_calc_util::Error) -> *const std::ffi::c_char {
     return rust_str_to_c_str(error.to_string());
 }
