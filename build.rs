@@ -36,7 +36,7 @@ fn replace_file_vars(in_file: &PathBuf, out_file: &PathBuf) {
     ];
 
     for (from, to) in rules {
-        if let Some(start) = contents.find(from) {
+        while let Some(start) = contents.find(from) {
             let range = start..start + from.len();
             contents.replace_range(range, to);
         }        
