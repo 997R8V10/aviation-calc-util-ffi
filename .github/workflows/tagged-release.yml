@@ -19,7 +19,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        arch: [x64, x86]
+        arch: [x64, x86, arm64]
         os: [macos-latest, windows-latest, ubuntu-latest]
         include:
           - os: macos-latest
@@ -35,18 +35,28 @@ jobs:
             rust-arch: i686
           - arch: x64
             rust-arch: x86_64
+          - arch: arm64
+            rust-arch: aarch64
+          - arch: arm
+            os: ubuntu-latest
+            short-os: linux
+            rust-os: unknown-linux-gnu-gnueabihf
+            rust-arch: armv7
           - os: ubuntu-latest
             arch: x64
             copy-nuget-defs: True
         exclude:
-          - os: ubuntu-latest
-            arch: x86
           - os: macos-latest
             arch: x86
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v3
+    - name: Download Rust Target
+      shell: pwsh
+      run: |
+        rustup target add ${{ matrix.rust-arch }}-${{ matrix.rust-os }}
     - name: Build
+      shell: pwsh
       run: cargo build --verbose --target-dir ${{ github.workspace }}/out/build --target ${{ matrix.rust-arch }}-${{ matrix.rust-os }} -r --config "env.NUGET_DEFS_OUTPUT='${{ github.workspace }}/out/build/nugetinfo'"
     - name: Copy Binaries to NuGet folder
       shell: pwsh
@@ -58,7 +68,7 @@ jobs:
       shell: pwsh
       run: |
         New-Item -ItemType Directory '${{ github.workspace }}/out/nuget/build'
-        Get-ChildItem -Path ${{ github.workspace }}/out/build/nugetinfo | Copy-Item -Destination ${{ github.workspace }}/out/nuget -Recurse -Container
+        Get-ChildItem -Path ${{ github.workspace }}/out/build/nugetinfo | Copy-Item -Destination ${{ github.workspace }}/out/nuget -Recurse -Container -Force
     - name: Archive NuGet Files
       if: ${{ matrix.create-nuget-package }}
       uses: actions/upload-artifact@v3
