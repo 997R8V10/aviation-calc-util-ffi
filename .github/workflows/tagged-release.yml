@@ -37,16 +37,13 @@ jobs:
             rust-arch: x86_64
           - arch: arm64
             rust-arch: aarch64
-          - arch: arm
-            os: ubuntu-latest
-            short-os: linux
-            rust-os: unknown-linux-gnu-gnueabihf
-            rust-arch: armv7
           - os: ubuntu-latest
             arch: x64
             copy-nuget-defs: True
         exclude:
           - os: macos-latest
+            arch: x86
+          - os: ubuntu-latest
             arch: x86
     runs-on: ${{ matrix.os }}
     steps:
@@ -55,6 +52,10 @@ jobs:
       shell: pwsh
       run: |
         rustup target add ${{ matrix.rust-arch }}-${{ matrix.rust-os }}
+    - name: Install Linux Arm64 Tools
+      if: ${{ matrix.os == 'ubuntu-latest' && matrix.arch == 'arm64' }}
+      run: |
+        sudo apt install aarch64-linux-gnu-gcc -y
     - name: Build
       shell: pwsh
       run: cargo build --verbose --target-dir ${{ github.workspace }}/out/build --target ${{ matrix.rust-arch }}-${{ matrix.rust-os }} -r --config "env.NUGET_DEFS_OUTPUT='${{ github.workspace }}/out/build/nugetinfo'"
