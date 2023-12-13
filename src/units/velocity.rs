@@ -8,6 +8,7 @@ use std::ops::Rem;
 use std::ops::Sub;
 
 crate::ffi_impl_all_for_number!(Velocity, units_velocity);
+crate::ffi_gen_from_method_for_number!(Velocity, units_velocity, from_meters_per_second, f64);
 crate::ffi_gen_from_method_for_number!(Velocity, units_velocity, from_knots, f64);
 crate::ffi_gen_from_method_for_number!(Velocity, units_velocity, from_feet_per_minute, f64);
 crate::ffi_gen_as_method_for_number!(Velocity, units_velocity, as_meters_per_second, f64);
