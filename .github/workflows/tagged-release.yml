@@ -37,6 +37,11 @@ jobs:
             rust-arch: x86_64
           - arch: arm64
             rust-arch: aarch64
+          # - arch: arm
+          #   os: ubuntu-latest
+          #   short-os: linux
+          #   rust-os: unknown-linux-gnu-gnueabihf
+          #   rust-arch: armv7
           - os: ubuntu-latest
             arch: x64
             copy-nuget-defs: True
@@ -45,6 +50,8 @@ jobs:
             arch: x86
           - os: ubuntu-latest
             arch: x86
+          - os: ubuntu-latest
+            arch: arm64
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v3
@@ -52,6 +59,15 @@ jobs:
       shell: pwsh
       run: |
         rustup target add ${{ matrix.rust-arch }}-${{ matrix.rust-os }}
+    - name: Install Linux Arm Tools
+      if: ${{ matrix.os == 'ubuntu-latest' && matrix.arch == 'arm' }}
+      run: |
+        dpkg --add-architecture armhf
+        apt-get update
+        apt-get install -y curl git build-essential
+        apt-get install -y libc6-armhf-cross libc6-dev-armhf-cross gcc-arm-linux-gnueabihf
+        export PKG_CONFIG_PATH="/usr/lib/arm-linux-gnueabihf/pkgconfig"
+        export PKG_CONFIG_ALLOW_CROSS="true"
     - name: Install Linux Arm64 Tools
       if: ${{ matrix.os == 'ubuntu-latest' && matrix.arch == 'arm64' }}
       run: |
