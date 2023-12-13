@@ -1,6 +1,6 @@
 [package]
 name = "aviation_calc_util_ffi"
-version = "2.3.0"
+version = "2.3.1"
 edition = "2021"
 build = "build.rs"
 description = "A library to assist with aviation related calculations."

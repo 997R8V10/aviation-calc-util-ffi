@@ -8,6 +8,7 @@ use std::ops::Neg;
 use std::ops::Rem;
 use std::ops::Sub;
 
+use crate::geo::DegMinSecStruct;
 use crate::interop::InteropDateTimeStruct;
 use crate::interop::struct_to_rust_duration;
 
@@ -20,4 +21,19 @@ crate::ffi_gen_as_method_for_number!(Angle, units_angle, as_degrees, f64);
 #[no_mangle]
 pub unsafe extern "C" fn units_angle_div_duration(ptr: *mut Angle, rhs: InteropDateTimeStruct) -> *mut AngularVelocity {
     return Box::leak(Box::new((&*ptr).div(struct_to_rust_duration(rhs))));
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn units_angle_from_deg_min_sec(val: DegMinSecStruct) -> *mut Angle {
+    return Box::leak(Box::new(Angle::from_deg_min_sec(val.deg, val.min, val.sec)));
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn units_angle_as_deg_min_sec(ptr: *mut Angle) -> DegMinSecStruct {
+    let dms = (&*ptr).as_deg_min_sec();
+    return DegMinSecStruct {
+        deg: dms.0,
+        min: dms.1,
+        sec: dms.2
+    };
 }
