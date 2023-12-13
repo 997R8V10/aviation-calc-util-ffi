@@ -77,6 +77,17 @@ pub struct InteropDateTimeStruct {
     pub nsecs: u32,
 }
 
+pub fn rust_duration_to_struct(duration: std::time::Duration) -> InteropDateTimeStruct {
+    return InteropDateTimeStruct {
+        secs: duration.as_secs() as i64,
+        nsecs: duration.subsec_nanos()
+    };
+}
+
+pub fn struct_to_rust_duration(duration_struct: InteropDateTimeStruct) -> std::time::Duration {
+    return std::time::Duration::new(duration_struct.secs as u64, duration_struct.nsecs);
+}
+
 pub fn rust_date_time_to_struct(date_time: &DateTime<Utc>) -> InteropDateTimeStruct {
     return InteropDateTimeStruct {
         secs: date_time.timestamp(),
