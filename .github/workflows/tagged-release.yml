@@ -87,7 +87,6 @@ jobs:
         New-Item -ItemType Directory '${{ github.workspace }}/out/nuget/build'
         Get-ChildItem -Path ${{ github.workspace }}/out/build/nugetinfo | Copy-Item -Destination ${{ github.workspace }}/out/nuget -Recurse -Container -Force
     - name: Archive NuGet Files
-      if: ${{ matrix.create-nuget-package }}
       uses: actions/upload-artifact@v3
       with:
         name: AviationCalcUtilNet-NuGet
