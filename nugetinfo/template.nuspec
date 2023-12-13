@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package>
+  <metadata minClientVersion="2.5">
+    <id>${NUGET_PACKAGE_NAME}</id>
+    <version>${CARGO_PKG_VERSION}</version>
+    <authors>${CARGO_PKG_AUTHORS}</authors>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <readme>${CARGO_PKG_README}</readme>
+    <license type="file">LICENSE</license>
+    <repository type="git" url="${CARGO_PKG_REPOSITORY}" />
+    <projectUrl>${CARGO_PKG_HOMEPAGE}</projectUrl>
+    <description>${CARGO_PKG_DESCRIPTION}</description>
+    <copyright>None</copyright>
+    <tags>aviationcalc</tags>
+  </metadata>
+  <files>
+    <file src="build\**" target="build" />
+    <file src="runtimes\**" target="runtimes" />
+    <file src="${CARGO_PKG_README}" target="" />
+    <file src="LICENSE" target="" />
+  </files>
+</package>
