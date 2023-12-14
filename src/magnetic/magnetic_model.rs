@@ -17,9 +17,14 @@ pub unsafe extern "C" fn magnetic_magnetic_model_new(
     epoch: f64,
     name: *const std::ffi::c_char,
     release_date: InteropDateStruct,
-    coeffs: InteropArrStruct<*mut MagneticModelCoefficients>,
+    coeffs: *mut *mut MagneticModelCoefficients,
+    coeffs_size: usize
 ) -> *mut MagneticModel {
-    let v = c_arr_to_rust_vec(coeffs);
+    let v = c_arr_to_rust_vec(InteropArrStruct {
+        ptr: coeffs,
+        length: coeffs_size as usize,
+        capacity: coeffs_size as usize
+    });
     let mut new_v = Vec::new();
     for ptr in v.iter() {
         new_v.push(**ptr);

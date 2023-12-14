@@ -5,8 +5,12 @@ use crate::interop::{InteropArrStruct, rust_vec_to_c_arr, c_arr_to_rust_vec};
 crate::ffi_impl_drop_for_struct!(Polynomial, math_polynomial);
 
 #[no_mangle]
-pub unsafe extern "C" fn math_polynomial_new(coefficients: InteropArrStruct<f64>) -> *mut Polynomial {
-    let v = c_arr_to_rust_vec(coefficients);
+pub unsafe extern "C" fn math_polynomial_new(coefficients: *mut f64, length: usize) -> *mut Polynomial {
+    let v = c_arr_to_rust_vec(InteropArrStruct {
+        ptr: coefficients,
+        length: length,
+        capacity: length
+    });
     return Box::leak(Box::new(Polynomial::new(&v)));
 }
 
