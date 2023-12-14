@@ -25,6 +25,11 @@ pub unsafe extern "C" fn geo_geo_point_new(lat: *mut Latitude, lon: *mut Longitu
 }
 
 #[no_mangle]
+pub unsafe extern "C" fn geo_geo_point_from_degs_and_ft(lat: f64, lon: f64, alt: f64) -> *mut GeoPoint {
+    return Box::leak(Box::new(GeoPoint::from_degs_and_ft(lat, lon, alt)));
+}
+
+#[no_mangle]
 pub unsafe extern "C" fn geo_geo_point_move_by(ptr: *mut GeoPoint, bearing: *mut Bearing, distance: *mut Length) {
     (&mut *ptr).move_by(*bearing, *distance);
 }

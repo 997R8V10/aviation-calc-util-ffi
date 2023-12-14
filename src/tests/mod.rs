@@ -1,4 +1,4 @@
-use crate::{interop::InteropArrStruct, math::polynomial::{math_polynomial_new, math_polynomial_coefficients, math_polynomial_drop}};
+use crate::math::polynomial::{math_polynomial_new, math_polynomial_coefficients, math_polynomial_drop};
 
 #[test]
 fn test_polynomial_1() {
