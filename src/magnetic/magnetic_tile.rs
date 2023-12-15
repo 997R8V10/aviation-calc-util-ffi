@@ -57,7 +57,13 @@ pub unsafe extern "C" fn magnetic_magnetic_tile_set_date(ptr: *mut MagneticTile,
 
 #[no_mangle]
 pub unsafe extern "C" fn magnetic_magnetic_tile_new(point: *mut GeoPoint, date: InteropDateStruct, model: *mut MagneticModel) -> *mut MagneticTile {
-    return Box::leak(Box::new(MagneticTile::new(&*point, &struct_to_rust_naive_date(date).unwrap(), &*model)));
+    let mut model_opt = None;
+
+    if !model.is_null() {
+        model_opt = Some(&*model);
+    }
+
+    return Box::leak(Box::new(MagneticTile::new(&*point, &struct_to_rust_naive_date(date).unwrap(), model_opt)));
 }
 
 #[no_mangle]
