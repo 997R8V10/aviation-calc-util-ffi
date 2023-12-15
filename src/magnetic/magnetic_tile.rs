@@ -8,6 +8,7 @@ use crate::interop::{struct_to_rust_naive_date, InteropDateStruct, rust_naive_da
 
 // MagneticTileManager
 crate::ffi_impl_drop_for_struct!(MagneticTileManager, magnetic_magnetic_tile_manager);
+crate::ffi_impl_default_for_struct!(MagneticTileManager, magnetic_magnetic_tile_manager);
 
 #[no_mangle]
 pub unsafe extern "C" fn magnetic_magnetic_tile_manager_new(model: *mut MagneticModel) -> *mut MagneticTileManager {
