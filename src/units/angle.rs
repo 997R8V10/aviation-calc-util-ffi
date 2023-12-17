@@ -1,5 +1,6 @@
 use aviation_calc_util::units::Angle;
 use aviation_calc_util::units::AngularVelocity;
+use aviation_calc_util::units::Length;
 use aviation_calc_util::units::Unit;
 use std::ops::Add;
 use std::ops::Div;
@@ -36,4 +37,14 @@ pub unsafe extern "C" fn units_angle_as_deg_min_sec(ptr: *mut Angle) -> DegMinSe
         min: dms.1,
         sec: dms.2
     };
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn units_angle_calculate_angle_from_arc_length(arc_length: *mut Length, radius: *mut Length) -> *mut Angle {
+    return Box::leak(Box::new(Angle::calculate_angle_from_arc_length(*arc_length, *radius)));
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn units_angle_calculate_arc_length(angle: *mut Angle, radius: *mut Length) -> *mut Length {
+    return Box::leak(Box::new(Angle::calculate_arc_length(*angle, *radius)));
 }

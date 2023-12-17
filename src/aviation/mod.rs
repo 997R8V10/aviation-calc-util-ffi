@@ -1,7 +1,7 @@
 use aviation_calc_util::{
     aviation::{
         calculate_arc_tangent_distance, calculate_bank_angle, calculate_constant_radius_turn, calculate_direct_bearing_after_turn, calculate_max_bank_angle, calculate_max_ground_speed_for_turn,
-        calculate_radius_of_turn, find_intersection_to_course, get_headwind_component, calculate_chord_for_turn, calculate_linear_course_intercept, calculate_arc_course_intercept, calculate_turn_lead_distance,
+        calculate_radius_of_turn, find_intersection_to_course, get_headwind_component, calculate_chord_for_turn, calculate_linear_course_intercept, calculate_arc_course_intercept, calculate_turn_lead_distance, calculate_flight_path_angle, calculate_vertical_speed,
     },
     geo::{Bearing, GeoPoint},
     units::{Angle, AngularVelocity, Length, Velocity},
@@ -167,4 +167,14 @@ pub unsafe extern "C" fn aviation_find_intersection_to_course(position: *mut Geo
         Some(intersection) => Box::leak(Box::new(intersection)),
         None => std::ptr::null_mut()
     };
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn aviation_calculate_flight_path_angle(ground_speed: *mut Velocity, vertical_speed: *mut Velocity) -> *mut Angle {
+    return Box::leak(Box::new(calculate_flight_path_angle(*ground_speed, *vertical_speed)));
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn aviation_calculate_vertical_speed(ground_speed: *mut Velocity, flight_path_angle: *mut Angle) -> *mut Velocity {
+    return Box::leak(Box::new(calculate_vertical_speed(*ground_speed, *flight_path_angle)));
 }
