@@ -1,3 +1,4 @@
+use aviation_calc_util::units::Acceleration;
 use aviation_calc_util::units::Length;
 use aviation_calc_util::units::Unit;
 use aviation_calc_util::units::Velocity;
@@ -27,4 +28,9 @@ crate::ffi_gen_unit_conv_func!(Velocity, convert_ftpermin_to_mpers, f64, units_v
 #[no_mangle]
 pub unsafe extern "C" fn units_velocity_mul_duration(ptr: *mut Velocity, rhs: InteropDateTimeStruct) -> *mut Length {
     return Box::leak(Box::new((&*ptr).mul(struct_to_rust_duration(rhs))));
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn units_velocity_div_duration(ptr: *mut Velocity, rhs: InteropDateTimeStruct) -> *mut Acceleration {
+    return Box::leak(Box::new((&*ptr).div(struct_to_rust_duration(rhs))));
 }

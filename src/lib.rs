@@ -6,6 +6,7 @@ pub mod macros;
 pub mod magnetic;
 pub mod math;
 pub mod units;
+pub mod physics;
 
 #[cfg(test)]
 mod tests;

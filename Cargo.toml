@@ -1,6 +1,6 @@
 [package]
 name = "aviation_calc_util_ffi"
-version = "2.7.2"
+version = "2.8.1"
 edition = "2021"
 build = "build.rs"
 description = "A library to assist with aviation related calculations."
@@ -16,5 +16,5 @@ categories = ["aerospace::simulation", "mathematics", "science::geo"]
 crate-type = ["cdylib"]
 
 [dependencies]
-aviation_calc_util = "2.7.2"
+aviation_calc_util = "2.8.1"
 paste = "1.0.14"
