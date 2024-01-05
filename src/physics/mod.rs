@@ -75,3 +75,19 @@ pub unsafe extern fn physics_kinematics_time_1(displacement: *mut Length, initia
 pub unsafe extern fn physics_kinematics_time_1_general(displacement: f64, initial_velocity: f64, final_velocity: f64) -> f64 {
     return physics::kinematics_time_1_general(displacement, initial_velocity, final_velocity);
 }
+
+/// Calculates Acceleration from Initial Velocity, Final Velocity, and Time
+/// 
+/// Kinematics Equation = a = (V<sub>f</sub> - V<sub>i</sub>) / t
+#[no_mangle]
+pub unsafe extern fn physics_kinematics_acceleration(initial_velocity: *mut Velocity, final_velocity: *mut Velocity, time: InteropDateTimeStruct) -> *mut Acceleration {
+    return Box::leak(Box::new(physics::kinematics_acceleration(*initial_velocity, *final_velocity, struct_to_rust_duration(time))));
+}
+
+/// Calculates Acceleration from Initial Velocity, Final Velocity, and Time
+/// 
+/// Kinematics Equation = a = (V<sub>f</sub> - V<sub>i</sub>) / t
+#[no_mangle]
+pub unsafe extern fn physics_kinematics_acceleration_general(initial_velocity: f64, final_velocity: f64, time: f64) -> f64 {
+    return physics::kinematics_acceleration_general(initial_velocity, final_velocity, time);
+}
