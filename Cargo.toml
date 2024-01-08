@@ -16,5 +16,5 @@ categories = ["aerospace::simulation", "mathematics", "science::geo"]
 crate-type = ["cdylib"]
 
 [dependencies]
-aviation_calc_util = "2.10.0"
+aviation_calc_util = "2.11.0"
 paste = "1.0.14"

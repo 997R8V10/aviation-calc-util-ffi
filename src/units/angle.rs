@@ -16,8 +16,10 @@ use crate::interop::struct_to_rust_duration;
 crate::ffi_impl_all_for_number!(Angle, units_angle);
 crate::ffi_gen_from_method_for_number!(Angle, units_angle, from_radians, f64);
 crate::ffi_gen_from_method_for_number!(Angle, units_angle, from_degrees, f64);
+crate::ffi_gen_from_method_for_number!(Angle, units_angle, from_percentage, f64);
 crate::ffi_gen_as_method_for_number!(Angle, units_angle, as_radians, f64);
 crate::ffi_gen_as_method_for_number!(Angle, units_angle, as_degrees, f64);
+crate::ffi_gen_as_method_for_number!(Angle, units_angle, as_percentage, f64);
 
 #[no_mangle]
 pub unsafe extern "C" fn units_angle_div_duration(ptr: *mut Angle, rhs: InteropDateTimeStruct) -> *mut AngularVelocity {
