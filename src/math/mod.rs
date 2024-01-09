@@ -12,8 +12,8 @@ pub unsafe extern "C" fn math_factorial_ratio(n: i32, m: i32) -> f64 {
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn math_interoplate_numbers(start: f64, end: f64, multiplier: f64) -> f64 {
-    return math::interoplate_numbers(start, end, multiplier);
+pub unsafe extern "C" fn math_interpolate_numbers(start: f64, end: f64, multiplier: f64) -> f64 {
+    return math::interpolate_numbers(start, end, multiplier);
 }
 
 #[no_mangle]
