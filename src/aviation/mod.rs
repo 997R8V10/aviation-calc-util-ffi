@@ -123,7 +123,7 @@ pub unsafe extern "C" fn aviation_calculate_arc_tangent_distance(theta: *mut Ang
 
 #[repr(C, packed)]
 pub struct InteropTurnLeadDistance {
-    pub is_null: bool,
+    pub is_null: u8,
     pub turn_lead_dist: *mut Length,
     pub radius_of_turn: *mut Length,
     pub intersection: *mut GeoPoint
@@ -144,7 +144,7 @@ pub unsafe extern "C" fn aviation_calculate_turn_lead_distance(
     return match calculate_turn_lead_distance(&*pos, &*wp, *cur_bearing, *true_airspeed, *course, *wind_direction, *wind_speed, *bank_limit, *turn_rate) {
         Some((tl_dist, rot, inters)) => {
             InteropTurnLeadDistance {
-                is_null: false,
+                is_null: false as u8,
                 turn_lead_dist: Box::leak(Box::new(tl_dist)),
                 radius_of_turn: Box::leak(Box::new(rot)),
                 intersection: Box::leak(Box::new(inters))
@@ -152,7 +152,7 @@ pub unsafe extern "C" fn aviation_calculate_turn_lead_distance(
         },
         None => {
             InteropTurnLeadDistance {
-                is_null: true,
+                is_null: true as u8,
                 turn_lead_dist: std::ptr::null_mut(),
                 radius_of_turn: std::ptr::null_mut(),
                 intersection: std::ptr::null_mut()
