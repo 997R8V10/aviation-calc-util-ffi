@@ -18,7 +18,7 @@ pub unsafe fn c_str_to_rust_str(ptr: *const std::ffi::c_char) -> String {
 }
 
 // C Array
-#[repr(C, packed)]
+#[repr(C)]
 pub struct InteropArrStruct<T> {
     pub ptr: *mut T,
     pub length: usize,
@@ -51,7 +51,7 @@ pub unsafe fn c_arr_to_rust_vec<T: Copy>(arr: InteropArrStruct<T>) -> Vec<T> {
 }
 
 // NaiveDate
-#[repr(C, packed)]
+#[repr(C)]
 pub struct InteropDateStruct {
     pub year: i32,
     pub month: u32,
@@ -71,7 +71,7 @@ pub fn struct_to_rust_naive_date(date_struct: InteropDateStruct) -> Option<Naive
 }
 
 // DateTime<Utc>
-#[repr(C, packed)]
+#[repr(C)]
 pub struct InteropDateTimeStruct {
     pub secs: i64,
     pub nsecs: u32,

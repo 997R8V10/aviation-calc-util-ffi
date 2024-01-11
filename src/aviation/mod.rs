@@ -7,7 +7,7 @@ use aviation_calc_util::{
     units::{Angle, AngularVelocity, Length, Velocity},
 };
 
-#[repr(C, packed)]
+#[repr(C)]
 pub struct InteropCourseInterceptInfo {
     pub required_course: *mut Bearing,
     pub along_track_distance: *mut Length,
@@ -66,7 +66,7 @@ pub unsafe extern "C" fn aviation_get_headwind_component(wind_bearing: *mut Bear
     return Box::leak(Box::new(get_headwind_component(*wind_bearing, *wind_speed, *bearing)));
 }
 
-#[repr(C, packed)]
+#[repr(C)]
 pub struct InteropChordLine {
     pub bearing: *mut Bearing,
     pub distance: *mut Length,
@@ -121,7 +121,7 @@ pub unsafe extern "C" fn aviation_calculate_arc_tangent_distance(theta: *mut Ang
     return Box::leak(Box::new(calculate_arc_tangent_distance(*theta, *r)));
 }
 
-#[repr(C, packed)]
+#[repr(C)]
 pub struct InteropTurnLeadDistance {
     pub is_null: u8,
     pub turn_lead_dist: *mut Length,

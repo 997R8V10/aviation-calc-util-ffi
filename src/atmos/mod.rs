@@ -71,7 +71,7 @@ pub unsafe extern "C" fn atmos_convert_tas_to_mach(tas: *mut Velocity, t: *mut T
     return convert_tas_to_mach(*tas, *t);
 }
 
-#[repr(C, packed)]
+#[repr(C)]
 pub struct InteropSpeedMachStruct {
     pub speed: *mut Velocity,
     pub mach: f64,

@@ -6,7 +6,7 @@ pub mod geo_tile;
 pub mod latitude;
 pub mod longitude;
 
-#[repr(C, packed)]
+#[repr(C)]
 pub struct DegMinSecStruct {
     pub deg: i32,
     pub min: u32,

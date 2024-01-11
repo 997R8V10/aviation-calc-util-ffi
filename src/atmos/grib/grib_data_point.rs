@@ -34,7 +34,7 @@ pub unsafe extern "C" fn atmos_grib_grib_data_point_distance_from(ptr: *mut Grib
     return Box::leak(Box::new((&*ptr).distance_from(&*point)));
 }
 
-#[repr(C, packed)]
+#[repr(C)]
 pub struct InteropWindStruct {
     pub dir: *mut Bearing,
     pub spd: *mut Velocity,
