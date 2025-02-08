@@ -38,6 +38,9 @@ jobs:
           - short-os: linux
             arch: x64
             copy-nuget-defs: True
+          - short-os: linux
+            arch: arm64
+            rust-config: --config "target.aarch64-unknown-linux-gnu.linker='aarch64-linux-gnu-gcc'"
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
@@ -58,7 +61,7 @@ jobs:
           sudo apt-get install gcc-aarch64-linux-gnu -y
       - name: Build
         shell: pwsh
-        run: cargo build --verbose --target-dir ${{ github.workspace }}/out/build --target ${{ matrix.rust-arch }}-${{ matrix.rust-os }} -r --config "env.NUGET_DEFS_OUTPUT='${{ github.workspace }}/out/build/nugetinfo'"
+        run: cargo build --verbose --target-dir ${{ github.workspace }}/out/build --target ${{ matrix.rust-arch }}-${{ matrix.rust-os }} -r --config "env.NUGET_DEFS_OUTPUT='${{ github.workspace }}/out/build/nugetinfo'" ${{ matrix.rust-config }}
       - name: Copy Binaries to NuGet folder
         shell: pwsh
         run: |
