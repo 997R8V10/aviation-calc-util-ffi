@@ -52,10 +52,6 @@ jobs:
         shell: pwsh
         run: |
           rustup target add ${{ matrix.rust-arch }}-${{ matrix.rust-os }}
-      - name: Install Linux Arm64 Tools
-        if: ${{ matrix.short-os == 'linux' && matrix.arch == 'arm64' }}
-        run: |
-          sudo apt install aarch64-linux-gnu-gcc -y
       - name: Build
         shell: pwsh
         run: cargo build --verbose --target-dir ${{ github.workspace }}/out/build --target ${{ matrix.rust-arch }}-${{ matrix.rust-os }} -r --config "env.NUGET_DEFS_OUTPUT='${{ github.workspace }}/out/build/nugetinfo'"
