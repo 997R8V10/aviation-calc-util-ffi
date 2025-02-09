@@ -38,9 +38,6 @@ jobs:
           - short-os: linux
             arch: x64
             copy-nuget-defs: True
-          - short-os: linux
-            arch: arm64
-            rust-config: --config "target.aarch64-unknown-linux-gnu.linker='aarch64-linux-gnu-gcc'"
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
@@ -50,7 +47,7 @@ jobs:
         uses: swatinem/rust-cache@v2
         with:
           workspaces: |
-            ./ -> target
+            ./out -> build
       - name: Download Rust Target
         shell: pwsh
         run: |
@@ -59,9 +56,10 @@ jobs:
         if: ${{ matrix.short-os == 'linux' && matrix.arch == 'arm64' }}
         run: |
           sudo apt-get install gcc-aarch64-linux-gnu -y
+          echo CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER=aarch64-linux-gnu-gcc >> "$GITHUB_ENV"
       - name: Build
         shell: pwsh
-        run: cargo build --verbose --target-dir ${{ github.workspace }}/out/build --target ${{ matrix.rust-arch }}-${{ matrix.rust-os }} -r --config "env.NUGET_DEFS_OUTPUT='${{ github.workspace }}/out/build/nugetinfo'" ${{ matrix.rust-config }}
+        run: cargo build --verbose --target-dir ${{ github.workspace }}/out/build --target ${{ matrix.rust-arch }}-${{ matrix.rust-os }} -r --config "env.NUGET_DEFS_OUTPUT='${{ github.workspace }}/out/build/nugetinfo'"
       - name: Copy Binaries to NuGet folder
         shell: pwsh
         run: |
